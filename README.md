@@ -1,4 +1,5 @@
-# M1-Optimized Encrypted Inference Engine (OpenFHE)
+```markdown
+# openfhe-ridge-inference: M1-Optimized Encrypted Engine
 
 **Project:** Degree-2 Polynomial Ridge Regression on Encrypted Data
 
@@ -14,7 +15,7 @@ This project implements a privacy-preserving inference engine capable of running
 
 Unlike standard linear encrypted inference, this engine handles **polynomial depth**. It demonstrates the manual management of ciphertext levels—specifically aligning the Linear Term (Depth 0) with the Quadratic Term (Depth 1)—to prevent noise overflow without relying on expensive bootstrapping.
 
-The system is engineered specifically for the **memory constraints of edge devices** (like the M1 MacBook Air), achieving inference in under 40ms with a memory footprint of less than 30MB.
+The system is engineered specifically for the **memory constraints of edge devices** (like the M1 MacBook Air), achieving inference in under 30ms with a memory footprint of less than 30MB.
 
 ## 2. Circuit Topology & Level Management
 
@@ -53,6 +54,65 @@ graph TD
 
 ```
 
+```text
+===================================================
+      THE POLYNOMIAL CIRCUIT MAP (CKKS)
+===================================================
+
+INPUTS:
+  > x  (Ciphertext):  Level 0 | Scale 2^40
+  > w1 (Plaintext):             Scale 2^40
+  > w2 (Plaintext):             Scale 2^40
+
+---------------------------------------------------
+BRANCH A: The Quadratic Term (w2 * x^2)
+---------------------------------------------------
+1. Operation: x * x
+   - Result Scale: 2^80 
+   - Result Level: 0
+
+2. Operation: Rescale()
+   - Result Scale: 2^40 
+   - Result Level: 1
+
+3. Operation: Multiply by w2
+   - Result Scale: 2^80
+   - Result Level: 1
+
+4. Operation: Rescale()
+   - Result Scale: 2^40
+   - Result Level: 2   <-- Branch A rests at Level 2
+
+---------------------------------------------------
+BRANCH B: The Linear Term (w1 * x)
+---------------------------------------------------
+1. Operation: x * w1
+   - Result Scale: 2^80
+   - Result Level: 0
+
+2. Operation: Rescale()
+   - Result Scale: 2^40
+   - Result Level: 1   <-- Branch B rests at Level 1
+
+---------------------------------------------------
+THE MERGE (Alignment & Addition)
+---------------------------------------------------
+Current Status:
+   - Branch A is at Level 2
+   - Branch B is at Level 1
+
+PROBLEM: You cannot add ciphertexts at different levels.
+
+THE FIX:
+   - Action: Apply LevelReduceInPlace() to Branch B.
+   - New Level of Branch B: 2
+
+FINAL STEP:
+   - Operation: Branch A (L2) + Branch B (L2) + Bias
+   - Result Level: 2
+
+```
+
 ## 3. Engineering Constraints & Decisions
 
 ### A. The "M1 Constraint" (RAM Usage)
@@ -85,7 +145,7 @@ Benchmarks run on MacBook Air (M1, 8GB RAM).
 ## 5. Directory Structure
 
 ```text
-EncryptedRidgeInference/
+openfhe-ridge-inference/
 ├── CMakeLists.txt          # Build config (Manual OpenFHE linking for M1)
 ├── README.md               # Project documentation
 ├── .gitignore              # Ignores binaries and build artifacts
@@ -128,4 +188,6 @@ EncryptedRidgeInference/
 ---
 
 *Author Note: This repository is a didactic prototype demonstrating cryptographic level management. It is not intended for production key management.*
+
+```
 
