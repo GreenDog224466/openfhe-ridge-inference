@@ -1,0 +1,1 @@
+/usr/bin/c++  -arch arm64 -Wl,-search_paths_first -Wl,-headerpad_max_install_names CMakeFiles/ridge_demo.dir/src/ridge.cpp.o -o ridge_demo  -Wl,-rpath,/usr/local/lib /usr/local/lib/libOPENFHEpke.dylib /usr/local/lib/libOPENFHEcore.dylib /usr/local/lib/libOPENFHEbinfhe.dylib

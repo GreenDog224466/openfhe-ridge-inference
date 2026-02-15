@@ -1,0 +1,27 @@
+# Prerequisites & Build Artifacts
+build/
+bin/
+lib/
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+
+# Python Generated Files
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+venv/
+.env
+
+# Data Files (CRITICAL: Do not upload these)
+*.csv
+*.bin
+cpp_inputs/
+data/
+ieee-fraud-detection_data/
+
+# IDE & System Files
+.DS_Store
+.vscode/
+.idea/

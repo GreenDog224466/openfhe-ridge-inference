@@ -1,0 +1,3 @@
+/Users/vishalalimchandani/Downloads/EncryptedRidgeInference/build/CMakeFiles/ridge_demo.dir
+/Users/vishalalimchandani/Downloads/EncryptedRidgeInference/build/CMakeFiles/edit_cache.dir
+/Users/vishalalimchandani/Downloads/EncryptedRidgeInference/build/CMakeFiles/rebuild_cache.dir
