@@ -188,6 +188,3 @@ openfhe-ridge-inference/
 ---
 
 *Author Note: This repository is a didactic prototype demonstrating cryptographic level management. It is not intended for production key management.*
-
-```
-
